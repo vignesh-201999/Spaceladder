@@ -1,0 +1,54 @@
+package login;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class Automationspaceladder {
+static WebDriver wd;
+	public static void main(String[] args) {
+		
+		System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+		
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--disable-notifications");
+		wd = new ChromeDriver(options);
+		wd.get("https://unergia-saas-staging-solarladder.vercel.app/login");
+		wd.findElement(By.xpath("//input[@name=\"email\"]")).sendKeys("solarladdertest787@yopmail.com");
+		wd.findElement(By.xpath("//input[@name=\"password\"]")).sendKeys("password");
+		WebDriverWait login = new WebDriverWait(wd, 20);
+		login.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"ant-btn ant-btn-text\"]")));
+		wd.findElement(By.xpath("//button[@class=\"ant-btn ant-btn-text\"]")).click();
+		
+		//Login is done
+		
+		WebDriverWait projectform = new WebDriverWait(wd, 20);
+		projectform.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"MuiButtonBase-root MuiButton-root MuiButton-contained accessibility crm-addprojectbutton MuiButton-containedPrimary\"]")));
+		wd.findElement(By.xpath("//button[@class=\"MuiButtonBase-root MuiButton-root MuiButton-contained accessibility crm-addprojectbutton MuiButton-containedPrimary\"]")).click();
+		wd.findElement(By.xpath("//input[@type=\"number\"]")).clear();
+		wd.findElement(By.xpath("//input[@type=\"number\"]")).sendKeys("50");
+		wd.findElement(By.xpath("//input[@name=\"customerName\"]")).sendKeys("Kenny");
+		wd.findElement(By.xpath("//input[@placeholder=\"Enter Customer's Phone Number\"]")).sendKeys("9999999999");
+		wd.findElement(By.xpath("//input[@name=\"location\"]")).sendKeys("Jharkhand");
+		wd.findElement(By.xpath("//*[@type=\"submit\"]")).click();
+		
+		//project creation is done
+		
+		wd.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		wd.switchTo().frame(0);
+		WebElement source = wd.findElement(By.xpath("//div[@class=\"crm-projectcard-top row\"]"));
+		WebElement target = wd.findElement(By.xpath("//section[@title=\"Site Visit\"]"));
+		Actions builder = new Actions(wd);
+		builder.dragAndDrop(source, target).perform();
+		
+		
+	}
+
+}
